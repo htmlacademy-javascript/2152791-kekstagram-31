@@ -1,3 +1,9 @@
+const photoCount = 25;
+const idCount = 30;
+const idArray = [];
+const urlArray = [];
+const commentsIdArray = [];
+
 const getRandomNumber = (min, max) => {
   const number = min + Math.random() * (max + 1 - min);
 
@@ -8,8 +14,23 @@ const shuffleArray = (array) => {
   array.sort(() => Math.random() - 0.5);
 };
 
+const generateRandomArrays = () => {
+  for (let i = 1; i <= photoCount; i++) {
+    idArray.push(i);
+    urlArray.push(i);
+  }
+
+  for (let i = 1; i <= idCount; i++) {
+    commentsIdArray.push(i);
+  }
+
+  shuffleArray(idArray);
+  shuffleArray(urlArray);
+  shuffleArray(commentsIdArray);
+};
+generateRandomArrays();
+
 const getComments = () => {
-  const commentsIdArray = [];
   const commentMessage = [
     'Всё отлично!',
     'В целом всё неплохо. Но не всё.',
@@ -27,13 +48,8 @@ const getComments = () => {
     'Анна',
   ];
 
-  for (let i = 1; i <= 30; i++) {
-    commentsIdArray.push(i);
-  }
-  shuffleArray(commentsIdArray);
-
   return {
-    id: commentsIdArray.pop(),
+    id: commentsIdArray.shift(),
     avatar: `img/avatar-${getRandomNumber(1, 6)}.svg`,
     message: commentMessage[getRandomNumber(0, 5)],
     name: names[getRandomNumber(0, 5)]
@@ -41,8 +57,6 @@ const getComments = () => {
 };
 
 const createPhoto = () => {
-  const idArray = [];
-  const urlArray = [];
   const photoDescription = [
     'Волки рядятся в овечью шкуру ради своих шкурных интересов',
     'Запомните волчья ягода не из волков',
@@ -53,23 +67,14 @@ const createPhoto = () => {
     'Волк чужого не ищет, волк довольствуется своим'
   ];
 
-  for (let i = 1; i <= 25; i++) {
-    idArray.push(i);
-  }
-  shuffleArray(idArray);
-
-  for (let i = 1; i <= 25; i++) {
-    urlArray.push(i);
-  }
-  shuffleArray(urlArray);
-
   return {
-    id: idArray.pop(),
-    url: `photos/${urlArray.pop()}.jpg`,
-    description: photoDescription[getRandomNumber(0, 9)],
+    id: idArray.shift(),
+    url: `photos/${urlArray.shift()}.jpg`,
+    description: photoDescription[getRandomNumber(0, 6)],
     likes: getRandomNumber(15, 200),
     comments: Array.from({length: getRandomNumber(0, 30)}, getComments)
   };
 };
 
-const photoArray = Array.from({length: 25}, createPhoto);
+const photoArray = Array.from({length: photoCount}, createPhoto);
+console.log(photoArray);
