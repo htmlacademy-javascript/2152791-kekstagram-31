@@ -1,3 +1,1 @@
-import {photoArray} from './data.js';
-
-photoArray();
+import './rendering.js';
