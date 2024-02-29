@@ -43,9 +43,9 @@ console.log(getNumbers(1.5));
 //5.16 Функции возвращаются
 // const isMeeting = (startDay, endDay, startMeet, meetingTime) => {
 //   const toMin = (hours) => {
-//     const timeArr = hours.split(':');
+//     const [hour, min] = hours.split(':');
 
-//     return Number((timeArr[0] * 60) + Number(timeArr[1]));
+//     return Number(hour * 60) + Number(min);
 //   };
 
 //   const startDayMin = toMin(startDay);
