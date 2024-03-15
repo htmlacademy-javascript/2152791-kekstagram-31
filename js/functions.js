@@ -1,17 +1,17 @@
 /* eslint-disable */
 
 //2.32 Нужно больше функций
-const checkLength = (str, length) => {
+function checkLength(str, length) {
   if (str.length <= length) {
     return true;
   }
   return false;
-};
+}
 console.log(checkLength('проверяемая строка', 20));
 console.log(checkLength('проверяемая строка', 18));
 console.log(checkLength('проверяемая строка', 10));
 
-const isMirror = (word) => {
+function isMirror(word) {
   let spareWord = '';
   for (let i = word.length - 1; i >= 0; i--) {
     spareWord += word[i];
@@ -20,17 +20,17 @@ const isMirror = (word) => {
     return true;
   }
   return false;
-};
+}
 console.log(isMirror('топот'));
 console.log(isMirror('ДовОд'));
 console.log(isMirror('Кекс'));
 
-const getNumbers = (str) => {
+function getNumbers(str) {
   if (!isNaN(str)) {
     return Math.abs(str).toString().replace('.', '');
   }
   return parseInt(str.replace(/[^0-9]/g, ''), 10);
-};
+}
 console.log(getNumbers('2023 год'));
 console.log(getNumbers('ECMAScript 2022'));
 console.log(getNumbers('1 кефир, 0.5 батона'));
@@ -41,8 +41,8 @@ console.log(getNumbers(-1));
 console.log(getNumbers(1.5));
 
 //5.16 Функции возвращаются
-const isMeeting = (startDay, endDay, startMeet, meetingTime) => {
-  const toMin = (hours) => {
+function isMeeting(startDay, endDay, startMeet, meetingTime) {
+  function toMin(hours) {
     const [hour, min] = hours.split(':');
 
     return Number(hour * 60) + Number(min);
@@ -57,8 +57,7 @@ const isMeeting = (startDay, endDay, startMeet, meetingTime) => {
     return true;
   }
   return false;
-};
-
+}
 console.log(isMeeting('08:00', '17:30', '14:00', 90));
 console.log(isMeeting('8:0', '10:0', '8:0', 120));
 console.log(isMeeting('08:00', '14:30', '14:00', 90));

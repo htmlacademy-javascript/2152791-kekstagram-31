@@ -6,7 +6,7 @@ const commentsIdArray = [];
 const photoCount = 25;
 const idCount = 30;
 
-const generateRandomArrays = () => {
+function generateRandomArrays() {
   for (let i = 1; i <= photoCount; i++) {
     idArray.push(i);
     urlArray.push(i);
@@ -19,10 +19,10 @@ const generateRandomArrays = () => {
   shuffleArray(idArray);
   shuffleArray(urlArray);
   shuffleArray(commentsIdArray);
-};
+}
 generateRandomArrays();
 
-const getComments = () => {
+function getComments() {
   const commentMessage = [
     'Всё отлично!',
     'В целом всё неплохо. Но не всё.',
@@ -46,6 +46,6 @@ const getComments = () => {
     message: commentMessage[getRandomNumber(0, 5)],
     name: names[getRandomNumber(0, 5)]
   };
-};
+}
 
 export {getComments, idArray, urlArray, photoCount};

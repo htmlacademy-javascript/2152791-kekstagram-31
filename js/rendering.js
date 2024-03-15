@@ -1,12 +1,11 @@
 import {photoArray} from './data.js';
 
-const photoRendering = photoArray();
 const photoWrapp = document.querySelector('.pictures');
 const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const photoFragment = document.createDocumentFragment();
 const commentArray = [];
 
-photoRendering.forEach(({ url, description, likes, comments }) => {
+photoArray.forEach(({ url, description, likes, comments }) => {
   const photoElement = photoTemplate.cloneNode(true);
 
   photoElement.querySelector('.picture__img').src = url;
