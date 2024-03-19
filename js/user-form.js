@@ -1,4 +1,5 @@
 import { addSubmitListener, removeSubmitListener } from './validation.js';
+import { sliderElement, targetImg } from './photo-effects.js';
 
 const uploadInput = document.querySelector('.img-upload__input');
 
@@ -91,6 +92,8 @@ function closeUserForm() {
   uploadPhoto.style.transform = 'scale(1)';
   scaleValue.value = '100%';
   defaultValue = 100;
+  targetImg.removeAttribute('style');
+  sliderElement.noUiSlider.set(0);
 
   removeSubmitListener();
 
