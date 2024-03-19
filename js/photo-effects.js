@@ -113,3 +113,5 @@ function brightnessEffect() {
   });
 }
 imgRadioBrightness.addEventListener('click', brightnessEffect);
+
+export {sliderElement, targetImg};
