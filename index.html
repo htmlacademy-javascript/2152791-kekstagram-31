@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="vendor/nouislider/nouislider.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <title>Кекстаграм</title>
 </head>
@@ -32,7 +33,7 @@
       <section class="img-upload">
         <div class="img-upload__wrapper">
           <h2 class="img-upload__title  visually-hidden">Загрузка фотографии</h2>
-          <form class="img-upload__form" id="upload-select-image" autocomplete="off">
+          <form class="img-upload__form" id="upload-select-image" method="post" enctype="multipart/form-data" action="https://31.javascript.htmlacademy.pro/kekstagram" autocomplete="off">
 
             <!-- Изначальное состояние поля для загрузки изображения -->
             <fieldset class="img-upload__start">
@@ -55,7 +56,7 @@
 
                   <!-- Предварительный просмотр изображения -->
                   <div class="img-upload__preview">
-                    <img src="img/upload-default-image.jpg" alt="Предварительный просмотр фотографии">
+                    <img class ="img-upload__photo" src="img/upload-default-image.jpg" alt="Предварительный просмотр фотографии">
                   </div>
 
                   <!-- Изменение глубины эффекта, накладываемого на изображение -->
@@ -165,8 +166,8 @@
           <!-- Комментарии к изображению -->
           <div class="social__comment-count"><span class="social__comment-shown-count">5</span> из <span
               class="social__comment-total-count">125</span> комментариев</div>
-          <ul class="social__comments">
-            <li class="social__comment">
+          <ul class="social__comments" id="comments">
+            <!-- <li class="social__comment">
               <img class="social__picture" src="img/avatar-4.svg" alt="Аватар комментатора фотографии" width="35"
                 height="35">
               <p class="social__text">Мега фото! Просто обалдеть. Как вам так удалось?</p>
@@ -175,7 +176,7 @@
               <img class="social__picture" src="img/avatar-3.svg" alt="Аватар комментатора фотографии" width="35"
                 height="35">
               <p class="social__text">Да это фоташоп!!!!!!!!</p>
-            </li>
+            </li> -->
           </ul>
 
           <!-- Кнопка для загрузки новой порции комментариев -->
@@ -250,8 +251,18 @@
     </section>
   </template>
 
+  <!-- Комментарий пользователя -->
+  <template id="user-comment">
+    <li class="social__comment">
+      <img class="social__picture" src="" width="35" height="35" alt="">
+      <p class="social__text"></p>
+    </li>
+  </template>
+
   <!-- Скрипты -->
   <script src="./js/main.js" type="module"></script>
+  <script src="./vendor/pristine/pristine.min.js"></script>
+  <script src="./vendor/nouislider/nouislider.js"></script>
 
 </body>
 

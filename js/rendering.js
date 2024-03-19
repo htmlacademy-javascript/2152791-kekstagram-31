@@ -3,17 +3,20 @@ import {photoArray} from './data.js';
 const photoWrapp = document.querySelector('.pictures');
 const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const photoFragment = document.createDocumentFragment();
-const photoRendering = photoArray();
+const commentArray = [];
 
-photoRendering.forEach(({url, description, likes, comments}) => {
-  const photoElemet = photoTemplate.cloneNode(true);
+photoArray.forEach(({ url, description, likes, comments }) => {
+  const photoElement = photoTemplate.cloneNode(true);
 
-  photoElemet.querySelector('.picture__img').src = url;
-  photoElemet.querySelector('.picture__img').alt = description;
-  photoElemet.querySelector('.picture__likes').textContent = likes;
-  photoElemet.querySelector('.picture__comments').textContent = comments.length;
+  photoElement.querySelector('.picture__img').src = url;
+  photoElement.querySelector('.picture__img').alt = description;
+  photoElement.querySelector('.picture__likes').textContent = likes;
+  photoElement.querySelector('.picture__comments').textContent = comments.length;
+  commentArray.push(comments);
 
-  photoFragment.appendChild(photoElemet);
+  photoFragment.appendChild(photoElement);
 });
 
 photoWrapp.appendChild(photoFragment);
+
+export {commentArray};
