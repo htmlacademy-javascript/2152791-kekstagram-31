@@ -1,30 +1,115 @@
-const smallerScaleButton = document.querySelector('.scale__control--smaller');
-const biggerScaleButton = document.querySelector('.scale__control--bigger');
-// const scaleValue = document.querySelector('.scale__control--value');
-const uploadPhoto = document.querySelector('.img-upload__photo');
+const sliderElement = document.querySelector('.effect-level__slider');
+const sliderContainer = document.querySelector('.img-upload__effect-level');
+const targetImg = document.querySelector('.img-upload__preview');
+const effectValue = document.querySelector('.effect-level__value');
+const imgOriginalEffect = document.getElementById('effect-none');
+const imgRadioChrome = document.getElementById('effect-chrome');
+const imgRadioSepia = document.getElementById('effect-sepia');
+const imgRadioInvert = document.getElementById('effect-marvin');
+const imgRadioBlur = document.getElementById('effect-phobos');
+const imgRadioBrightness = document.getElementById('effect-heat');
 
-function reducePhoto() {
-  uploadPhoto.style.transform = 'scale(0.75)';
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 1,
+  },
+  start: 0,
+  step: 0.1,
+  connect: 'lower'
+});
+sliderContainer.classList.add('hidden');
+
+function originalEffect() {
+  sliderContainer.classList.add('hidden');
+
+  targetImg.removeAttribute('style');
 }
-smallerScaleButton.addEventListener('click', reducePhoto);
+imgOriginalEffect.addEventListener('click', originalEffect);
 
-function increasePhoto() {
-  uploadPhoto.style.transform = 'scale(1)';
+function chromeEffect() {
+  sliderContainer.classList.remove('hidden');
+  sliderElement.noUiSlider.set(0);
+
+  sliderElement.noUiSlider.on('update', () => {
+    effectValue.value = sliderElement.noUiSlider.get();
+    const chromeIntensity = `grayscale(${effectValue.value})`;
+    targetImg.style.filter = chromeIntensity;
+  });
 }
-biggerScaleButton.addEventListener('click', increasePhoto);
+imgRadioChrome.addEventListener('click', chromeEffect);
 
-//
-function createSlider() {
-  const sliderElement = document.querySelector('.effect-level__slider');
+function sepiaEffect() {
+  sliderContainer.classList.remove('hidden');
+  sliderElement.noUiSlider.set(0);
 
-  noUiSlider.create(sliderElement, {
+  sliderElement.noUiSlider.on('update', () => {
+    effectValue.value = sliderElement.noUiSlider.get();
+    const sepiaIntensity = `sepia(${effectValue.value})`;
+    targetImg.style.filter = sepiaIntensity;
+  });
+}
+imgRadioSepia.addEventListener('click', sepiaEffect);
+
+function invertEffect() {
+  sliderContainer.classList.remove('hidden');
+
+  sliderElement.noUiSlider.updateOptions({
     range: {
       min: 0,
       max: 100,
     },
     start: 0,
-    connect: 'lower'
+    step: 1,
+  });
+  sliderElement.noUiSlider.set(0);
+
+  sliderElement.noUiSlider.on('update', () => {
+    effectValue.value = sliderElement.noUiSlider.get();
+    const invertIntensity = `invert(${effectValue.value}%)`;
+    targetImg.style.filter = invertIntensity;
   });
 }
+imgRadioInvert.addEventListener('click', invertEffect);
 
-export { createSlider };
+function blurEffect() {
+  sliderContainer.classList.remove('hidden');
+
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: 0,
+      max: 3,
+    },
+    start: 0,
+    step: 0.1,
+  });
+  sliderElement.noUiSlider.set(0);
+
+  sliderElement.noUiSlider.on('update', () => {
+    effectValue.value = sliderElement.noUiSlider.get();
+    const blurIntensity = `blur(${effectValue.value}px)`;
+    targetImg.style.filter = blurIntensity;
+  });
+}
+imgRadioBlur.addEventListener('click', blurEffect);
+
+function brightnessEffect() {
+  sliderContainer.classList.remove('hidden');
+
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: 1,
+      max: 3,
+    },
+    start: 0,
+    step: 0.1,
+  });
+  sliderElement.noUiSlider.set(1);
+
+  sliderElement.noUiSlider.on('update', () => {
+    effectValue.value = sliderElement.noUiSlider.get();
+    const brightnessIntensity = `brightness(${effectValue.value})`;
+    targetImg.style.filter = brightnessIntensity;
+  });
+}
+imgRadioBrightness.addEventListener('click', brightnessEffect);
