@@ -1,5 +1,6 @@
 import { addSubmitListener, removeSubmitListener } from './validation.js';
 import { sliderElement, targetImg } from './photo-effects.js';
+import { scaleValue, defaultValue } from './photo-scale.js';
 
 const uploadInput = document.querySelector('.img-upload__input');
 
@@ -41,48 +42,6 @@ const pageBody = document.querySelector('body');
 const commentInput = document.querySelector('.text__description');
 const hashtagInput = document.querySelector('.text__hashtags');
 
-const smallerScaleButton = document.querySelector('.scale__control--smaller');
-const biggerScaleButton = document.querySelector('.scale__control--bigger');
-const scaleValue = document.querySelector('.scale__control--value');
-let defaultValue = 100;
-const defaultStep = 25;
-
-function reducePhoto() {
-  if (defaultValue === 100) {
-    uploadPhoto.style.transform = 'scale(0.75)';
-    defaultValue = defaultValue - defaultStep;
-  } else if (defaultValue === 75) {
-    uploadPhoto.style.transform = 'scale(0.50)';
-    defaultValue = defaultValue - defaultStep;
-  } else if (defaultValue === 50) {
-    uploadPhoto.style.transform = 'scale(0.25)';
-    defaultValue = defaultValue - defaultStep;
-  } else if (defaultValue < 25) {
-    return;
-  }
-
-  scaleValue.value = `${defaultValue}%`;
-}
-smallerScaleButton.addEventListener('click', reducePhoto);
-
-function increasePhoto() {
-  if (defaultValue === 25) {
-    uploadPhoto.style.transform = 'scale(0.50)';
-    defaultValue = defaultValue + defaultStep;
-  } else if (defaultValue === 50) {
-    uploadPhoto.style.transform = 'scale(0.75)';
-    defaultValue = defaultValue + defaultStep;
-  } else if (defaultValue === 75) {
-    uploadPhoto.style.transform = 'scale(1)';
-    defaultValue = defaultValue + defaultStep;
-  } else if (defaultValue > 100) {
-    return;
-  }
-
-  scaleValue.value = `${defaultValue}%`;
-}
-biggerScaleButton.addEventListener('click', increasePhoto);
-
 function closeUserForm() {
   uploadInputOverlay.classList.add('hidden');
   pageBody.classList.remove('modal-open');
@@ -91,7 +50,7 @@ function closeUserForm() {
   commentInput.value = '';
   uploadPhoto.style.transform = 'scale(1)';
   scaleValue.value = '100%';
-  defaultValue = 100;
+  // defaultValue = 100;
   targetImg.removeAttribute('style');
   sliderElement.noUiSlider.set(0);
 
@@ -117,3 +76,5 @@ function openUserForm() {
   document.addEventListener('click', closeFormOutside);
   document.addEventListener('keydown', pressEscape);
 }
+
+export {uploadPhoto };
