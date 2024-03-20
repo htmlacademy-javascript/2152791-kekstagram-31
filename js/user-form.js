@@ -1,6 +1,6 @@
 import { addSubmitListener, removeSubmitListener } from './validation.js';
-import { sliderElement, targetImg } from './photo-effects.js';
-import { scaleValue, defaultValue } from './photo-scale.js';
+import { sliderContainer, targetImg, imgOriginalEffect } from './photo-effects.js';
+import { scaleValue } from './photo-scale.js';
 
 const uploadInput = document.querySelector('.img-upload__input');
 
@@ -50,9 +50,8 @@ function closeUserForm() {
   commentInput.value = '';
   uploadPhoto.style.transform = 'scale(1)';
   scaleValue.value = '100%';
-  // defaultValue = 100;
   targetImg.removeAttribute('style');
-  sliderElement.noUiSlider.set(0);
+  sliderContainer.classList.add('hidden');
 
   removeSubmitListener();
 
@@ -66,6 +65,7 @@ function closeUserForm() {
 function openUserForm() {
   uploadInputOverlay.classList.remove('hidden');
   pageBody.classList.add('modal-open');
+  imgOriginalEffect.checked = true;
 
   loadUserPic();
   addSubmitListener();
