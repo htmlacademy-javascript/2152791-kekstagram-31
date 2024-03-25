@@ -119,18 +119,21 @@ function commentLoader() {
   bigPhotoCommentsShown.textContent = bigPhotoCommentsWrapper.querySelectorAll('li:not(.hidden)').length;
 }
 
-const smallPhotos = document.querySelectorAll('.picture');
+function openPreview() {
+  const smallPhotos = document.querySelectorAll('.picture');
 
-smallPhotos.forEach((photos, i) => {
-  photos.addEventListener('click', () => {
-    openPhoto();
+  smallPhotos.forEach((photos, i) => {
+    photos.addEventListener('click', () => {
+      openPhoto();
 
-    photoRendering(photos);
+      photoRendering(photos);
 
-    appendComments(i);
+      appendComments(i);
 
-    createSubarray();
+      createSubarray();
 
-    bigPhotoCommentsShown.textContent = bigPhotoCommentsWrapper.querySelectorAll('li:not(.hidden)').length;
+      bigPhotoCommentsShown.textContent = bigPhotoCommentsWrapper.querySelectorAll('li:not(.hidden)').length;
+    });
   });
-});
+}
+export {openPreview};

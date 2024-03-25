@@ -3,6 +3,7 @@ import { sliderContainer, targetImg, imgOriginalEffect } from './photo-effects.j
 import { scaleValue } from './photo-scale.js';
 
 const uploadInput = document.querySelector('.img-upload__input');
+const pageBody = document.querySelector('body');
 
 uploadInput.addEventListener('change', openUserForm);
 
@@ -14,8 +15,9 @@ function closeFormOutside(evt) {
   }
 }
 
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 function pressEscape(evt) {
-  if (evt.key === 'Escape') {
+  if (evt.key === 'Escape' && evt.target.contains(errorTemplate)) {
     evt.preventDefault();
     closeUserForm();
   }
@@ -38,7 +40,6 @@ function loadUserPic() {
 }
 
 const closeButton = document.querySelector('.img-upload__cancel');
-const pageBody = document.querySelector('body');
 const commentInput = document.querySelector('.text__description');
 const hashtagInput = document.querySelector('.text__hashtags');
 
@@ -77,4 +78,4 @@ function openUserForm() {
   document.addEventListener('keydown', pressEscape);
 }
 
-export {uploadPhoto };
+export { uploadPhoto, closeUserForm };
