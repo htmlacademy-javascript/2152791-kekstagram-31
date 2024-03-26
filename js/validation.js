@@ -1,6 +1,10 @@
+//Наладить удаление обработчиков!!!!
+
 import { closeUserForm } from './user-form.js';
+import { pressEscape } from './user-form.js';
 
 const userForm = document.querySelector('.img-upload__form');
+const submitButton = document.querySelector('.img-upload__submit');
 const hashtagSymbols = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const pristine = new Pristine(userForm, {
@@ -58,68 +62,75 @@ function testCommentLength(value) {
 pristine.addValidator(userForm.querySelector('.text__description'), testCommentLength, 'Длина комментария больше 140 символов');
 
 const pageBody = document.querySelector('body');
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const successButton = successTemplate.querySelector('.success__button');
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const errorButton = errorTemplate.querySelector('.error__button');
 
-// function testClick(el) {
-//   pageBody.removeChild(el);
-// }
+const successEventClickBind = eventClick.bind(null, successTemplate);
+const successEventClickOutBind = eventClickOut.bind(null, successTemplate);
+const successEventEscapeBind = eventEscape.bind(null, successTemplate);
 
-// function testClickOut(evt, el) {
-//   if (evt.target.contains(el)) {
-//     pageBody.removeChild(el);
-//   }
-// }
+const errorEventClickBind = eventClick.bind(null, errorTemplate);
+const errorEventClickOutBind = eventClickOut.bind(null, errorTemplate);
+const errorEventEscapeBind = eventEscape.bind(null, errorTemplate);
+
+function eventClick(el) {
+  pageBody.removeChild(el);
+
+  document.removeEventListener('keydown', errorEventEscapeBind);
+  document.addEventListener('keydown', pressEscape);
+}
+
+function eventClickOut(el, evt) {
+  if (evt.target.contains(el)) {
+    pageBody.removeChild(el);
+  }
+
+  document.removeEventListener('keydown', errorEventEscapeBind);
+  document.addEventListener('keydown', pressEscape);
+}
+
+function eventEscape(el, evt) {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    pageBody.removeChild(el);
+
+    document.addEventListener('keydown', pressEscape);
+  }
+}
 
 function successPopup() {
-  const successTemplate = document.querySelector('#success').content.querySelector('.success');
-  const successPopupElement = successTemplate.cloneNode(true);
-  pageBody.appendChild(successPopupElement);
+  pageBody.appendChild(successTemplate);
 
-  const successButton = successPopupElement.querySelector('.success__button');
-
-  // successButton.addEventListener('click', testClick.bind(null, successPopupElement));
-  // document.addEventListener('click', testClickOut.bind(null, successPopupElement));
-
-  successButton.addEventListener('click', () => {
-    pageBody.removeChild(successPopupElement);
-  });
-
-  document.addEventListener('click', (evt) => {
-    if (evt.target.contains(successPopupElement)) {
-      pageBody.removeChild(successPopupElement);
-    }
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
-      evt.preventDefault();
-      pageBody.removeChild(successPopupElement);
-    }
-  });
+  successButton.addEventListener('click', successEventClickBind);
+  document.addEventListener('click', successEventClickOutBind);
+  document.addEventListener('keydown', successEventEscapeBind);
 }
 
 function errorPopup() {
-  const errorTemplate = document.querySelector('#error').content.querySelector('.error');
-  const errorPopupElement = errorTemplate.cloneNode(true);
+  pageBody.appendChild(errorTemplate);
 
-  pageBody.appendChild(errorPopupElement);
+  document.removeEventListener('keydown', pressEscape);
 
-  const errorButton = errorPopupElement.querySelector('.error__button');
-  errorButton.addEventListener('click', () => {
-    pageBody.removeChild(errorPopupElement);
-  });
+  errorButton.addEventListener('click', errorEventClickBind);
+  document.addEventListener('click', errorEventClickOutBind);
+  document.addEventListener('keydown', errorEventEscapeBind, {once: true});
+}
 
-  document.addEventListener('click', (evt) => {
-    if (evt.target.contains(errorPopupElement)) {
-      pageBody.removeChild(errorPopupElement);
-    }
-  });
+const submitButtonText = {
+  IDLE: 'ОПУБЛИКОВАТЬ',
+  SENDING: 'ПУБЛИКУЕМ...'
+};
 
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
-      evt.preventDefault();
-      pageBody.removeChild(errorPopupElement);
-    }
-  });
+function blockSubmitButton() {
+  submitButton.disabled = true;
+  submitButton.textContent = submitButtonText.SENDING;
+}
+
+function unblockSubmitButton() {
+  submitButton.disabled = false;
+  submitButton.textContent = submitButtonText.IDLE;
 }
 
 function startPrestine(evt) {
@@ -127,9 +138,10 @@ function startPrestine(evt) {
 
   if (pristine.validate()) {
     const formData = new FormData(evt.target);
+    blockSubmitButton();
 
     fetch(
-      'https://31.javascript.htmlacademy.pro/kekstagra',
+      'https://31.javascript.htmlacademy.pro/kekstagram',
       {
         method: 'POST',
         body: formData,
@@ -138,16 +150,20 @@ function startPrestine(evt) {
 
       .then((response) => {
         if (response.ok) {
-          closeUserForm();
           successPopup();
+          closeUserForm();
         } else {
           errorPopup();
         }
-      });
+      })
 
-    // .catch(() => {
-    //   alert('Не удалось отправить форму. Попробуйте ещё раз');
-    // });
+      .catch(() => {
+        errorPopup();
+      })
+
+      .finally(() => {
+        unblockSubmitButton();
+      });
   }
 }
 

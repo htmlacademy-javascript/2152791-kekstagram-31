@@ -15,9 +15,8 @@ function closeFormOutside(evt) {
   }
 }
 
-const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 function pressEscape(evt) {
-  if (evt.key === 'Escape' && evt.target.contains(errorTemplate)) {
+  if (evt.key === 'Escape') {
     evt.preventDefault();
     closeUserForm();
   }
@@ -78,4 +77,4 @@ function openUserForm() {
   document.addEventListener('keydown', pressEscape);
 }
 
-export { uploadPhoto, closeUserForm };
+export { uploadPhoto, closeUserForm, pressEscape };

@@ -13,20 +13,23 @@ function dataError() {
   }, errorTime);
 }
 
-function createLoader() {
-  fetch(
-    'https://31.javascript.htmlacademy.pro/kekstagram/data')
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      dataError();
-    })
+fetch(
+  'https://31.javascript.htmlacademy.pro/kekstagram/data')
 
-    .then((data) => {
-      renderPhoto(data);
+  .then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    dataError();
+  })
 
-      openPreview(data);
-    });
-}
-createLoader();
+  .then((data) => {
+    renderPhoto(data);
+
+    openPreview(data);
+  })
+
+  .catch(() => {
+    dataError();
+  });
+
