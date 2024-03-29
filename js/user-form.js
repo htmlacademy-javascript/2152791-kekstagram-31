@@ -1,3 +1,5 @@
+//Удалить обработчики
+
 import { addSubmitListener, removeSubmitListener } from './validation.js';
 import { sliderContainer, targetImg, imgOriginalEffect } from './photo-effects.js';
 import { scaleValue } from './photo-scale.js';
@@ -14,6 +16,9 @@ function closeFormOutside(evt) {
     closeUserForm();
   }
 }
+
+const escapeEventTogglerActive = new Event('escapeEventTogglerActive');
+const escapeEventTogglerDisable = new Event('escapeEventTogglerDisable');
 
 function pressEscape(evt) {
   if (evt.key === 'Escape') {
@@ -60,6 +65,12 @@ function closeUserForm() {
   closeButton.removeEventListener('click', closeUserForm);
   document.removeEventListener('click', closeFormOutside);
   document.removeEventListener('keydown', pressEscape);
+  document.removeEventListener('escapeEventTogglerActive', () => {
+    document.removeEventListener('keydown', pressEscape);
+  });
+  document.removeEventListener('escapeEventTogglerDisable', () => {
+    document.addEventListener('keydown', pressEscape);
+  });
 }
 
 function openUserForm() {
@@ -75,6 +86,12 @@ function openUserForm() {
   closeButton.addEventListener('click', closeUserForm);
   document.addEventListener('click', closeFormOutside);
   document.addEventListener('keydown', pressEscape);
+  document.addEventListener('escapeEventTogglerActive', () => {
+    document.removeEventListener('keydown', pressEscape);
+  });
+  document.addEventListener('escapeEventTogglerDisable', () => {
+    document.addEventListener('keydown', pressEscape);
+  });
 }
 
-export { uploadPhoto, closeUserForm, pressEscape };
+export { uploadPhoto, closeUserForm, escapeEventTogglerActive, escapeEventTogglerDisable };

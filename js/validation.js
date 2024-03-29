@@ -149,7 +149,7 @@ function startPrestine(evt) {
     blockSubmitButton();
 
     fetch(
-      'https://31.javascript.htmlacademy.pro/kekstagram',
+      'https://31.javascript.htmlacademy.pro/kekstagra',
       {
         method: 'POST',
         body: formData,
