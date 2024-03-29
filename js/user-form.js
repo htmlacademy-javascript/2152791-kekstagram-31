@@ -1,4 +1,4 @@
-//Удалить обработчик
+//Удалить обработчикaaaaaaaa
 
 import { addSubmitListener, removeSubmitListener } from './validation.js';
 import { sliderContainer, targetImg, imgOriginalEffect } from './photo-effects.js';
