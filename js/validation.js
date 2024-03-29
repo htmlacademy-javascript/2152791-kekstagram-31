@@ -1,7 +1,5 @@
-//Наладить удаление обработчиков!!!!
-
 import { closeUserForm } from './user-form.js';
-import { pressEscape } from './user-form.js';
+import { escapeEventTogglerActive, escapeEventTogglerDisable } from './user-form.js';
 
 const userForm = document.querySelector('.img-upload__form');
 const submitButton = document.querySelector('.img-upload__submit');
@@ -78,8 +76,11 @@ const errorEventEscapeBind = eventEscape.bind(null, errorTemplate);
 function eventClick(el) {
   pageBody.removeChild(el);
 
+  document.dispatchEvent(escapeEventTogglerDisable);
   document.removeEventListener('keydown', errorEventEscapeBind);
-  document.addEventListener('keydown', pressEscape);
+  document.removeEventListener('click', successEventClickOutBind);
+  document.removeEventListener('keydown', errorEventEscapeBind);
+  document.removeEventListener('click', errorEventClickOutBind);
 }
 
 function eventClickOut(el, evt) {
@@ -87,8 +88,11 @@ function eventClickOut(el, evt) {
     pageBody.removeChild(el);
   }
 
+  document.dispatchEvent(escapeEventTogglerDisable);
+  document.removeEventListener('keydown', successEventEscapeBind);
+  document.removeEventListener('click', successEventClickOutBind);
   document.removeEventListener('keydown', errorEventEscapeBind);
-  document.addEventListener('keydown', pressEscape);
+  document.removeEventListener('click', errorEventClickBind);
 }
 
 function eventEscape(el, evt) {
@@ -96,7 +100,11 @@ function eventEscape(el, evt) {
     evt.preventDefault();
     pageBody.removeChild(el);
 
-    document.addEventListener('keydown', pressEscape);
+    document.dispatchEvent(escapeEventTogglerDisable);
+    successButton.removeEventListener('click', successEventClickBind);
+    document.removeEventListener('click', successEventClickOutBind);
+    document.removeEventListener('click', errorEventClickBind);
+    document.removeEventListener('click', errorEventClickOutBind);
   }
 }
 
@@ -105,16 +113,16 @@ function successPopup() {
 
   successButton.addEventListener('click', successEventClickBind);
   document.addEventListener('click', successEventClickOutBind);
-  document.addEventListener('keydown', successEventEscapeBind);
+  document.addEventListener('keydown', successEventEscapeBind, {once: true});
 }
 
 function errorPopup() {
   pageBody.appendChild(errorTemplate);
 
-  document.removeEventListener('keydown', pressEscape);
+  document.dispatchEvent(escapeEventTogglerActive);
 
   errorButton.addEventListener('click', errorEventClickBind);
-  document.addEventListener('click', errorEventClickOutBind);
+  document.addEventListener('click', errorEventClickOutBind, {once: true});
   document.addEventListener('keydown', errorEventEscapeBind, {once: true});
 }
 
