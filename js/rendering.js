@@ -106,8 +106,6 @@ function renderPhoto(photoArray) {
 
     newArr = newArr.sort((a, b) => b - a);
 
-    console.log(newArr);
-
     addArray.forEach((photo) => {
       photoFragment.appendChild(photo);
     });
