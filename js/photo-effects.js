@@ -1,24 +1,32 @@
 const sliderElement = document.querySelector('.effect-level__slider');
 const sliderContainer = document.querySelector('.img-upload__effect-level');
-const targetImg = document.querySelector('.img-upload__preview');
-const effectValue = document.querySelector('.effect-level__value');
-const imgOriginalEffect = document.getElementById('effect-none');
-const imgRadioChrome = document.getElementById('effect-chrome');
-const imgRadioSepia = document.getElementById('effect-sepia');
-const imgRadioInvert = document.getElementById('effect-marvin');
-const imgRadioBlur = document.getElementById('effect-phobos');
-const imgRadioBrightness = document.getElementById('effect-heat');
 
 noUiSlider.create(sliderElement, {
   range: {
     min: 0,
     max: 1,
   },
-  start: 0,
+  start: 1,
   step: 0.1,
   connect: 'lower'
 });
 sliderContainer.classList.add('hidden');
+
+function updateSlider(min, max, start, step) {
+  sliderContainer.classList.remove('hidden');
+
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min,
+      max,
+    },
+    start,
+    step
+  });
+}
+
+const targetImg = document.querySelector('.img-upload__preview');
+const imgOriginalEffect = document.getElementById('effect-none');
 
 function originalEffect() {
   sliderContainer.classList.add('hidden');
@@ -27,9 +35,11 @@ function originalEffect() {
 }
 imgOriginalEffect.addEventListener('click', originalEffect);
 
+const effectValue = document.querySelector('.effect-level__value');
+const imgRadioChrome = document.getElementById('effect-chrome');
+
 function chromeEffect() {
-  sliderContainer.classList.remove('hidden');
-  sliderElement.noUiSlider.set(0);
+  updateSlider(0, 1, 1, 0.1);
 
   sliderElement.noUiSlider.on('update', () => {
     effectValue.value = sliderElement.noUiSlider.get();
@@ -39,9 +49,10 @@ function chromeEffect() {
 }
 imgRadioChrome.addEventListener('click', chromeEffect);
 
+const imgRadioSepia = document.getElementById('effect-sepia');
+
 function sepiaEffect() {
-  sliderContainer.classList.remove('hidden');
-  sliderElement.noUiSlider.set(0);
+  updateSlider(0, 1, 1, 0.1);
 
   sliderElement.noUiSlider.on('update', () => {
     effectValue.value = sliderElement.noUiSlider.get();
@@ -51,18 +62,10 @@ function sepiaEffect() {
 }
 imgRadioSepia.addEventListener('click', sepiaEffect);
 
-function invertEffect() {
-  sliderContainer.classList.remove('hidden');
+const imgRadioInvert = document.getElementById('effect-marvin');
 
-  sliderElement.noUiSlider.updateOptions({
-    range: {
-      min: 0,
-      max: 100,
-    },
-    start: 0,
-    step: 1,
-  });
-  sliderElement.noUiSlider.set(0);
+function invertEffect() {
+  updateSlider(0, 100, 100, 1);
 
   sliderElement.noUiSlider.on('update', () => {
     effectValue.value = sliderElement.noUiSlider.get();
@@ -72,18 +75,10 @@ function invertEffect() {
 }
 imgRadioInvert.addEventListener('click', invertEffect);
 
-function blurEffect() {
-  sliderContainer.classList.remove('hidden');
+const imgRadioBlur = document.getElementById('effect-phobos');
 
-  sliderElement.noUiSlider.updateOptions({
-    range: {
-      min: 0,
-      max: 3,
-    },
-    start: 0,
-    step: 0.1,
-  });
-  sliderElement.noUiSlider.set(0);
+function blurEffect() {
+  updateSlider(0, 3, 3, 0.1);
 
   sliderElement.noUiSlider.on('update', () => {
     effectValue.value = sliderElement.noUiSlider.get();
@@ -93,18 +88,10 @@ function blurEffect() {
 }
 imgRadioBlur.addEventListener('click', blurEffect);
 
-function brightnessEffect() {
-  sliderContainer.classList.remove('hidden');
+const imgRadioBrightness = document.getElementById('effect-heat');
 
-  sliderElement.noUiSlider.updateOptions({
-    range: {
-      min: 1,
-      max: 3,
-    },
-    start: 0,
-    step: 0.1,
-  });
-  sliderElement.noUiSlider.set(1);
+function brightnessEffect() {
+  updateSlider(1, 3, 3, 0.1);
 
   sliderElement.noUiSlider.on('update', () => {
     effectValue.value = sliderElement.noUiSlider.get();
@@ -114,4 +101,4 @@ function brightnessEffect() {
 }
 imgRadioBrightness.addEventListener('click', brightnessEffect);
 
-export {sliderElement, targetImg};
+export { sliderContainer, targetImg, imgOriginalEffect };

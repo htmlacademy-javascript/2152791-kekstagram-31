@@ -1,4 +1,8 @@
+import { closeUserForm } from './user-form.js';
+import { escapeEventTogglerActive, escapeEventTogglerDisable } from './user-form.js';
+
 const userForm = document.querySelector('.img-upload__form');
+const submitButton = document.querySelector('.img-upload__submit');
 const hashtagSymbols = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const pristine = new Pristine(userForm, {
@@ -55,9 +59,119 @@ function testCommentLength(value) {
 }
 pristine.addValidator(userForm.querySelector('.text__description'), testCommentLength, 'Длина комментария больше 140 символов');
 
-function startPrestine(evt) {
-  if (!pristine.validate()) {
+const pageBody = document.querySelector('body');
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const successButton = successTemplate.querySelector('.success__button');
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const errorButton = errorTemplate.querySelector('.error__button');
+
+const successEventClickBind = eventClick.bind(null, successTemplate);
+const successEventClickOutBind = eventClickOut.bind(null, successTemplate);
+const successEventEscapeBind = eventEscape.bind(null, successTemplate);
+
+const errorEventClickBind = eventClick.bind(null, errorTemplate);
+const errorEventClickOutBind = eventClickOut.bind(null, errorTemplate);
+const errorEventEscapeBind = eventEscape.bind(null, errorTemplate);
+
+function eventClick(el) {
+  pageBody.removeChild(el);
+
+  document.dispatchEvent(escapeEventTogglerDisable);
+  document.removeEventListener('keydown', errorEventEscapeBind);
+  document.removeEventListener('click', successEventClickOutBind);
+  document.removeEventListener('keydown', errorEventEscapeBind);
+  document.removeEventListener('click', errorEventClickOutBind);
+}
+
+function eventClickOut(el, evt) {
+  if (evt.target.contains(el)) {
+    pageBody.removeChild(el);
+  }
+
+  document.dispatchEvent(escapeEventTogglerDisable);
+  document.removeEventListener('keydown', successEventEscapeBind);
+  document.removeEventListener('click', successEventClickOutBind);
+  document.removeEventListener('keydown', errorEventEscapeBind);
+  document.removeEventListener('click', errorEventClickBind);
+}
+
+function eventEscape(el, evt) {
+  if (evt.key === 'Escape') {
     evt.preventDefault();
+    pageBody.removeChild(el);
+
+    document.dispatchEvent(escapeEventTogglerDisable);
+    successButton.removeEventListener('click', successEventClickBind);
+    document.removeEventListener('click', successEventClickOutBind);
+    document.removeEventListener('click', errorEventClickBind);
+    document.removeEventListener('click', errorEventClickOutBind);
+  }
+}
+
+function successPopup() {
+  pageBody.appendChild(successTemplate);
+
+  successButton.addEventListener('click', successEventClickBind);
+  document.addEventListener('click', successEventClickOutBind);
+  document.addEventListener('keydown', successEventEscapeBind, {once: true});
+}
+
+function errorPopup() {
+  pageBody.appendChild(errorTemplate);
+
+  document.dispatchEvent(escapeEventTogglerActive);
+
+  errorButton.addEventListener('click', errorEventClickBind);
+  document.addEventListener('click', errorEventClickOutBind, {once: true});
+  document.addEventListener('keydown', errorEventEscapeBind, {once: true});
+}
+
+const submitButtonText = {
+  IDLE: 'ОПУБЛИКОВАТЬ',
+  SENDING: 'ПУБЛИКУЕМ...'
+};
+
+function blockSubmitButton() {
+  submitButton.disabled = true;
+  submitButton.textContent = submitButtonText.SENDING;
+}
+
+function unblockSubmitButton() {
+  submitButton.disabled = false;
+  submitButton.textContent = submitButtonText.IDLE;
+}
+
+function startPrestine(evt) {
+  evt.preventDefault();
+
+  if (pristine.validate()) {
+    const formData = new FormData(evt.target);
+    blockSubmitButton();
+
+    fetch(
+      'https://31.javascript.htmlacademy.pro/kekstagra',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    )
+
+      .then((response) => {
+        if (response.ok) {
+          successPopup();
+          closeUserForm();
+        } else {
+          errorPopup();
+        }
+      })
+
+      .catch(() => {
+        errorPopup();
+      })
+
+      .finally(() => {
+        unblockSubmitButton();
+      });
   }
 }
 

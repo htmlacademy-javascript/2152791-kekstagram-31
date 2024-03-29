@@ -1,8 +1,11 @@
+//Удалить обработчикaaaaaaaa
+
 import { addSubmitListener, removeSubmitListener } from './validation.js';
-import { sliderElement, targetImg } from './photo-effects.js';
-import { scaleValue, defaultValue } from './photo-scale.js';
+import { sliderContainer, targetImg, imgOriginalEffect } from './photo-effects.js';
+import { scaleValue } from './photo-scale.js';
 
 const uploadInput = document.querySelector('.img-upload__input');
+const pageBody = document.querySelector('body');
 
 uploadInput.addEventListener('change', openUserForm);
 
@@ -13,6 +16,9 @@ function closeFormOutside(evt) {
     closeUserForm();
   }
 }
+
+const escapeEventTogglerActive = new Event('escapeEventTogglerActive');
+const escapeEventTogglerDisable = new Event('escapeEventTogglerDisable');
 
 function pressEscape(evt) {
   if (evt.key === 'Escape') {
@@ -38,7 +44,6 @@ function loadUserPic() {
 }
 
 const closeButton = document.querySelector('.img-upload__cancel');
-const pageBody = document.querySelector('body');
 const commentInput = document.querySelector('.text__description');
 const hashtagInput = document.querySelector('.text__hashtags');
 
@@ -50,9 +55,8 @@ function closeUserForm() {
   commentInput.value = '';
   uploadPhoto.style.transform = 'scale(1)';
   scaleValue.value = '100%';
-  // defaultValue = 100;
   targetImg.removeAttribute('style');
-  sliderElement.noUiSlider.set(0);
+  sliderContainer.classList.add('hidden');
 
   removeSubmitListener();
 
@@ -61,11 +65,18 @@ function closeUserForm() {
   closeButton.removeEventListener('click', closeUserForm);
   document.removeEventListener('click', closeFormOutside);
   document.removeEventListener('keydown', pressEscape);
+  document.removeEventListener('escapeEventTogglerActive', () => {
+    document.removeEventListener('keydown', pressEscape);
+  });
+  document.removeEventListener('escapeEventTogglerDisable', () => {
+    document.addEventListener('keydown', pressEscape);
+  });
 }
 
 function openUserForm() {
   uploadInputOverlay.classList.remove('hidden');
   pageBody.classList.add('modal-open');
+  imgOriginalEffect.checked = true;
 
   loadUserPic();
   addSubmitListener();
@@ -75,6 +86,12 @@ function openUserForm() {
   closeButton.addEventListener('click', closeUserForm);
   document.addEventListener('click', closeFormOutside);
   document.addEventListener('keydown', pressEscape);
+  document.addEventListener('escapeEventTogglerActive', () => {
+    document.removeEventListener('keydown', pressEscape);
+  });
+  document.addEventListener('escapeEventTogglerDisable', () => {
+    document.addEventListener('keydown', pressEscape);
+  });
 }
 
-export {uploadPhoto };
+export { uploadPhoto, closeUserForm, escapeEventTogglerActive, escapeEventTogglerDisable };

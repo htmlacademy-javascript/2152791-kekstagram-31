@@ -1,45 +1,54 @@
-import {uploadPhoto } from './user-form.js';
+import { uploadPhoto } from './user-form.js';
 
 const smallerScaleButton = document.querySelector('.scale__control--smaller');
 const biggerScaleButton = document.querySelector('.scale__control--bigger');
 const scaleValue = document.querySelector('.scale__control--value');
-let defaultValue = 100;
 const defaultStep = 25;
 
 function reducePhoto() {
-  if (defaultValue === 100) {
-    uploadPhoto.style.transform = 'scale(0.75)';
-    defaultValue = defaultValue - defaultStep;
-  } else if (defaultValue === 75) {
-    uploadPhoto.style.transform = 'scale(0.50)';
-    defaultValue = defaultValue - defaultStep;
-  } else if (defaultValue === 50) {
-    uploadPhoto.style.transform = 'scale(0.25)';
-    defaultValue = defaultValue - defaultStep;
-  } else if (defaultValue < 25) {
-    return;
-  }
+  switch (scaleValue.value) {
+    case '100%':
+      uploadPhoto.style.transform = 'scale(0.75)';
+      scaleValue.value = `${parseInt(scaleValue.value, 10) - defaultStep}%`;
+      break;
 
-  scaleValue.value = `${defaultValue}%`;
+    case '75%':
+      uploadPhoto.style.transform = 'scale(0.50)';
+      scaleValue.value = `${parseInt(scaleValue.value, 10) - defaultStep}%`;
+      break;
+
+    case '50%':
+      uploadPhoto.style.transform = 'scale(0.25)';
+      scaleValue.value = `${parseInt(scaleValue.value, 10) - defaultStep}%`;
+      break;
+
+    case '25%':
+      break;
+  }
 }
 smallerScaleButton.addEventListener('click', reducePhoto);
 
 function increasePhoto() {
-  if (defaultValue === 25) {
-    uploadPhoto.style.transform = 'scale(0.50)';
-    defaultValue = defaultValue + defaultStep;
-  } else if (defaultValue === 50) {
-    uploadPhoto.style.transform = 'scale(0.75)';
-    defaultValue = defaultValue + defaultStep;
-  } else if (defaultValue === 75) {
-    uploadPhoto.style.transform = 'scale(1)';
-    defaultValue = defaultValue + defaultStep;
-  } else if (defaultValue > 100) {
-    return;
-  }
+  switch (scaleValue.value) {
+    case '25%':
+      uploadPhoto.style.transform = 'scale(0.50)';
+      scaleValue.value = `${parseInt(scaleValue.value, 10) + defaultStep}%`;
+      break;
 
-  scaleValue.value = `${defaultValue}%`;
+    case '50%':
+      uploadPhoto.style.transform = 'scale(0.75)';
+      scaleValue.value = `${parseInt(scaleValue.value, 10) + defaultStep}%`;
+      break;
+
+    case '75%':
+      uploadPhoto.style.transform = 'scale(1)';
+      scaleValue.value = `${parseInt(scaleValue.value, 10) + defaultStep}%`;
+      break;
+
+    case '100%':
+      break;
+  }
 }
 biggerScaleButton.addEventListener('click', increasePhoto);
 
-export { scaleValue, defaultValue };
+export { scaleValue };
