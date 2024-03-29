@@ -182,5 +182,5 @@ function addSubmitListener() {
 function removeSubmitListener() {
   userForm.removeEventListener('submit', startPrestine);
 }
-//
+
 export { addSubmitListener, removeSubmitListener };
