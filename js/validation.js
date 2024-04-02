@@ -1,5 +1,5 @@
 import { closeUserForm } from './user-form.js';
-import { escapeEventTogglerActive, escapeEventTogglerDisable } from './user-form.js';
+import { escapeEventTogglerOpen, escapeEventTogglerClose } from './user-form.js';
 
 const userForm = document.querySelector('.img-upload__form');
 const submitButton = document.querySelector('.img-upload__submit');
@@ -73,26 +73,31 @@ const errorEventClickBind = eventClick.bind(null, errorTemplate);
 const errorEventClickOutBind = eventClickOut.bind(null, errorTemplate);
 const errorEventEscapeBind = eventEscape.bind(null, errorTemplate);
 
+function eventRemover() {
+  successButton.removeEventListener('click', successEventClickBind);
+  document.removeEventListener('click', successEventClickOutBind);
+  document.removeEventListener('keydown', successEventEscapeBind);
+
+  errorButton.removeEventListener('click', errorEventClickBind);
+  document.removeEventListener('click', errorEventClickOutBind);
+  document.removeEventListener('keydown', errorEventEscapeBind);
+}
+
 function eventClick(el) {
   pageBody.removeChild(el);
 
-  document.dispatchEvent(escapeEventTogglerDisable);
-  document.removeEventListener('keydown', errorEventEscapeBind);
-  document.removeEventListener('click', successEventClickOutBind);
-  document.removeEventListener('keydown', errorEventEscapeBind);
-  document.removeEventListener('click', errorEventClickOutBind);
+  document.dispatchEvent(escapeEventTogglerOpen);
+
+  eventRemover();
 }
 
 function eventClickOut(el, evt) {
   if (evt.target.contains(el)) {
     pageBody.removeChild(el);
-  }
+    eventRemover();
 
-  document.dispatchEvent(escapeEventTogglerDisable);
-  document.removeEventListener('keydown', successEventEscapeBind);
-  document.removeEventListener('click', successEventClickOutBind);
-  document.removeEventListener('keydown', errorEventEscapeBind);
-  document.removeEventListener('click', errorEventClickBind);
+    document.dispatchEvent(escapeEventTogglerOpen);
+  }
 }
 
 function eventEscape(el, evt) {
@@ -100,12 +105,10 @@ function eventEscape(el, evt) {
     evt.preventDefault();
     pageBody.removeChild(el);
 
-    document.dispatchEvent(escapeEventTogglerDisable);
-    successButton.removeEventListener('click', successEventClickBind);
-    document.removeEventListener('click', successEventClickOutBind);
-    document.removeEventListener('click', errorEventClickBind);
-    document.removeEventListener('click', errorEventClickOutBind);
+    document.dispatchEvent(escapeEventTogglerOpen);
   }
+
+  eventRemover();
 }
 
 function successPopup() {
@@ -113,17 +116,17 @@ function successPopup() {
 
   successButton.addEventListener('click', successEventClickBind);
   document.addEventListener('click', successEventClickOutBind);
-  document.addEventListener('keydown', successEventEscapeBind, {once: true});
+  document.addEventListener('keydown', successEventEscapeBind);
 }
 
 function errorPopup() {
   pageBody.appendChild(errorTemplate);
 
-  document.dispatchEvent(escapeEventTogglerActive);
+  document.dispatchEvent(escapeEventTogglerClose);
 
   errorButton.addEventListener('click', errorEventClickBind);
-  document.addEventListener('click', errorEventClickOutBind, {once: true});
-  document.addEventListener('keydown', errorEventEscapeBind, {once: true});
+  document.addEventListener('click', errorEventClickOutBind);
+  document.addEventListener('keydown', errorEventEscapeBind);
 }
 
 const submitButtonText = {
@@ -149,7 +152,7 @@ function startPrestine(evt) {
     blockSubmitButton();
 
     fetch(
-      'https://31.javascript.htmlacademy.pro/kekstagra',
+      'https://31.javascript.htmlacademy.pro/kekstagram',
       {
         method: 'POST',
         body: formData,
@@ -158,8 +161,8 @@ function startPrestine(evt) {
 
       .then((response) => {
         if (response.ok) {
-          successPopup();
           closeUserForm();
+          successPopup();
         } else {
           errorPopup();
         }

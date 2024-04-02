@@ -1,9 +1,9 @@
-import { renderPhoto } from './rendering.js';
+// import { renderPhoto } from './rendering.js';
+import { renderFilters } from './filters.js';
 
 const dataErrorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
 const pageBody = document.querySelector('body');
 const errorTime = 5000;
-
 
 function dataError() {
   pageBody.appendChild(dataErrorTemplate);
@@ -26,8 +26,8 @@ fetch(
     dataError();
   })
 
-  .then((data) => {
-    renderPhoto(data);
+  .then((photoArray) => {
+    renderFilters(photoArray);
   })
 
   .catch(() => {
