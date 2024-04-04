@@ -2,7 +2,7 @@ import {getRandomNumber} from './utils.js';
 import {getComments, idArray, urlArray, photoCount} from './generators.js';
 
 function createPhoto() {
-  const photoDescription = [
+  const PhotoDescriptions = [
     'Волки рядятся в овечью шкуру ради своих шкурных интересов',
     'Запомните волчья ягода не из волков',
     'Волк слабее льва и тигра, но в цирке не выступает',
@@ -15,7 +15,7 @@ function createPhoto() {
   return {
     id: idArray.shift(),
     url: `photos/${urlArray.shift()}.jpg`,
-    description: photoDescription[getRandomNumber(0, 6)],
+    description: PhotoDescriptions[getRandomNumber(0, 6)],
     likes: getRandomNumber(15, 200),
     comments: Array.from({length: getRandomNumber(0, 30)}, getComments)
   };

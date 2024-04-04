@@ -1,4 +1,4 @@
-import { addSubmitListener, removeSubmitListener } from './validation.js';
+import { addSubmitListener, removeSubmitListener, pristine } from './validation.js';
 import { sliderContainer, targetImg, imgOriginalEffect } from './photo-effects.js';
 import { scaleValue } from './photo-scale.js';
 
@@ -37,18 +37,7 @@ function focusCheck(evt) {
   return evt.stopPropagation();
 }
 
-const preloadPhoto = document.getElementById('upload-file');
 const uploadPhoto = document.querySelector('.img-upload__photo');
-
-function loadUserPic() {
-  const preloadPhotoFile = preloadPhoto.files[0];
-
-  if (preloadPhotoFile) {
-    const preloadPhotoUrl = URL.createObjectURL(preloadPhotoFile);
-    uploadPhoto.src = preloadPhotoUrl;
-  }
-}
-
 const closeButton = document.querySelector('.img-upload__cancel');
 const commentInput = document.querySelector('.text__description');
 const hashtagInput = document.querySelector('.text__hashtags');
@@ -73,6 +62,7 @@ function closeUserForm() {
   scaleValue.value = '100%';
   targetImg.removeAttribute('style');
   sliderContainer.classList.add('hidden');
+  pristine.reset();
 
   removeSubmitListener();
 
@@ -94,7 +84,6 @@ function openUserForm() {
   pageBody.classList.add('modal-open');
   imgOriginalEffect.checked = true;
 
-  loadUserPic();
   addSubmitListener();
 
   addEvents();

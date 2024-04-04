@@ -1,15 +1,10 @@
-/* eslint-disable */
-
-//2.32 Нужно больше функций
 function checkLength(str, length) {
   if (str.length <= length) {
     return true;
   }
   return false;
 }
-console.log(checkLength('проверяемая строка', 20));
-console.log(checkLength('проверяемая строка', 18));
-console.log(checkLength('проверяемая строка', 10));
+checkLength();
 
 function isMirror(word) {
   let spareWord = '';
@@ -21,9 +16,7 @@ function isMirror(word) {
   }
   return false;
 }
-console.log(isMirror('топот'));
-console.log(isMirror('ДовОд'));
-console.log(isMirror('Кекс'));
+isMirror();
 
 function getNumbers(str) {
   if (!isNaN(str)) {
@@ -31,14 +24,7 @@ function getNumbers(str) {
   }
   return parseInt(str.replace(/[^0-9]/g, ''), 10);
 }
-console.log(getNumbers('2023 год'));
-console.log(getNumbers('ECMAScript 2022'));
-console.log(getNumbers('1 кефир, 0.5 батона'));
-console.log(getNumbers('агент 007'));
-console.log(getNumbers('а я томат'));
-console.log(getNumbers(2023));
-console.log(getNumbers(-1));
-console.log(getNumbers(1.5));
+getNumbers();
 
 //5.16 Функции возвращаются
 function isMeeting(startDay, endDay, startMeet, meetingTime) {
@@ -46,7 +32,7 @@ function isMeeting(startDay, endDay, startMeet, meetingTime) {
     const [hour, min] = hours.split(':');
 
     return Number(hour * 60) + Number(min);
-  };
+  }
 
   const startDayMin = toMin(startDay);
   const endDayMin = toMin(endDay);
@@ -58,8 +44,4 @@ function isMeeting(startDay, endDay, startMeet, meetingTime) {
   }
   return false;
 }
-console.log(isMeeting('08:00', '17:30', '14:00', 90));
-console.log(isMeeting('8:0', '10:0', '8:0', 120));
-console.log(isMeeting('08:00', '14:30', '14:00', 90));
-console.log(isMeeting('14:00', '17:30', '08:0', 90));
-console.log(isMeeting('8:00', '17:30', '08:00', 900));
+isMeeting();
