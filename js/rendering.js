@@ -6,8 +6,10 @@ const photoTemplate = document.querySelector('#picture').content.querySelector('
 const photoFragment = document.createDocumentFragment();
 
 function RenderPhoto(photoArray) {
-  photoArray.forEach(({ url, description, likes, comments }) => {
+  photoArray.forEach(({url, description, likes, comments }) => {
     const photoElement = photoTemplate.cloneNode(true);
+
+    photoElement.setAttribute('photo-src', url);
 
     photoElement.querySelector('.picture__img').src = url;
     photoElement.querySelector('.picture__img').alt = description;
