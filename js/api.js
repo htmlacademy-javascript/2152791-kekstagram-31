@@ -1,22 +1,21 @@
-import { renderPhoto } from './rendering.js';
+import { RenderFilters } from './filters.js';
 
+const ERROR_TIME = 5000;
 const dataErrorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
 const pageBody = document.querySelector('body');
-const errorTime = 5000;
-
 
 function dataError() {
   pageBody.appendChild(dataErrorTemplate);
 
   setTimeout(() => {
     pageBody.removeChild(dataErrorTemplate);
-  }, errorTime);
+  }, ERROR_TIME);
 }
 
 const filtersWrapper = document.querySelector('.img-filters');
 
 fetch(
-  'https://31.javascript.htmlacademy.pro/kekstagram/data')
+  'https://31.javascript.htmlacademy.pro/kekstagram/data/')
 
   .then((response) => {
     if (response.ok) {
@@ -26,8 +25,8 @@ fetch(
     dataError();
   })
 
-  .then((data) => {
-    renderPhoto(data);
+  .then((photoArray) => {
+    RenderFilters(photoArray);
   })
 
   .catch(() => {

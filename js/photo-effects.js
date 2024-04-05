@@ -8,7 +8,18 @@ noUiSlider.create(sliderElement, {
   },
   start: 1,
   step: 0.1,
-  connect: 'lower'
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      if (Number.isInteger(value)) {
+        return value.toFixed(0);
+      }
+      return value.toFixed(1);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
 });
 sliderContainer.classList.add('hidden');
 
@@ -25,20 +36,20 @@ function updateSlider(min, max, start, step) {
   });
 }
 
-const targetImg = document.querySelector('.img-upload__preview');
+const targetImg = document.querySelector('.img-upload__photo');
 const imgOriginalEffect = document.getElementById('effect-none');
 
-function originalEffect() {
+function applyOriginalEffect() {
   sliderContainer.classList.add('hidden');
 
   targetImg.removeAttribute('style');
 }
-imgOriginalEffect.addEventListener('click', originalEffect);
+imgOriginalEffect.addEventListener('click', applyOriginalEffect);
 
 const effectValue = document.querySelector('.effect-level__value');
 const imgRadioChrome = document.getElementById('effect-chrome');
 
-function chromeEffect() {
+function applyChromeEffect() {
   updateSlider(0, 1, 1, 0.1);
 
   sliderElement.noUiSlider.on('update', () => {
@@ -47,11 +58,11 @@ function chromeEffect() {
     targetImg.style.filter = chromeIntensity;
   });
 }
-imgRadioChrome.addEventListener('click', chromeEffect);
+imgRadioChrome.addEventListener('click', applyChromeEffect);
 
 const imgRadioSepia = document.getElementById('effect-sepia');
 
-function sepiaEffect() {
+function applySepiaEffect() {
   updateSlider(0, 1, 1, 0.1);
 
   sliderElement.noUiSlider.on('update', () => {
@@ -60,11 +71,11 @@ function sepiaEffect() {
     targetImg.style.filter = sepiaIntensity;
   });
 }
-imgRadioSepia.addEventListener('click', sepiaEffect);
+imgRadioSepia.addEventListener('click', applySepiaEffect);
 
 const imgRadioInvert = document.getElementById('effect-marvin');
 
-function invertEffect() {
+function applyInvertEffect() {
   updateSlider(0, 100, 100, 1);
 
   sliderElement.noUiSlider.on('update', () => {
@@ -73,11 +84,11 @@ function invertEffect() {
     targetImg.style.filter = invertIntensity;
   });
 }
-imgRadioInvert.addEventListener('click', invertEffect);
+imgRadioInvert.addEventListener('click', applyInvertEffect);
 
 const imgRadioBlur = document.getElementById('effect-phobos');
 
-function blurEffect() {
+function applyBlurEffect() {
   updateSlider(0, 3, 3, 0.1);
 
   sliderElement.noUiSlider.on('update', () => {
@@ -86,11 +97,11 @@ function blurEffect() {
     targetImg.style.filter = blurIntensity;
   });
 }
-imgRadioBlur.addEventListener('click', blurEffect);
+imgRadioBlur.addEventListener('click', applyBlurEffect);
 
 const imgRadioBrightness = document.getElementById('effect-heat');
 
-function brightnessEffect() {
+function applyBrightnessEffect() {
   updateSlider(1, 3, 3, 0.1);
 
   sliderElement.noUiSlider.on('update', () => {
@@ -99,6 +110,6 @@ function brightnessEffect() {
     targetImg.style.filter = brightnessIntensity;
   });
 }
-imgRadioBrightness.addEventListener('click', brightnessEffect);
+imgRadioBrightness.addEventListener('click', applyBrightnessEffect);
 
 export { sliderContainer, targetImg, imgOriginalEffect };

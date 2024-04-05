@@ -1,9 +1,11 @@
-import { commentArray } from './rendering.js';
+import { commentsArray } from './rendering.js';
 
+const COMMENT_STEP = 5;
+let COMMENTS_COUNT = 0;
 const commentTemplate = document.querySelector('#user-comment').content.querySelector('.social__comment');
 const commentFragment = document.createDocumentFragment();
 
-function commentsCreator(comment) {
+function CommentsCreator(comment) {
   const commentElement = commentTemplate.cloneNode(true);
   commentElement.querySelector('.social__picture').src = comment.avatar;
   commentElement.querySelector('.social__picture').alt = comment.name;
@@ -30,8 +32,7 @@ const bigPhotoPopup = document.querySelector('.big-picture');
 const pageBody = document.querySelector('body');
 const deleteComments = document.getElementById('comments');
 const loaderButton = document.querySelector('.social__comments-loader');
-const subArray = [];
-let commentCount = 0;
+const addArray = [];
 
 function pressEscape(evt) {
   if (evt.key === 'Escape') {
@@ -50,9 +51,9 @@ function closePhoto() {
   bigPhotoPopup.classList.add('hidden');
   pageBody.classList.remove('modal-open');
   deleteComments.innerHTML = '';
-  commentCount = 0;
+  COMMENTS_COUNT = 0;
   loaderButton.classList.remove('hidden');
-  subArray.length = 0;
+  addArray.length = 0;
 
   document.removeEventListener('keydown', pressEscape);
   document.removeEventListener('click', closePhotoOutside);
@@ -73,32 +74,30 @@ function openPhoto() {
 const bigPhotoCommentsWrapper = document.querySelector('.social__comments');
 
 function appendComments(i) {
-  commentArray[i].forEach((comment) => {
-    commentsCreator(comment);
+  commentsArray[i].forEach((comment) => {
+    CommentsCreator(comment);
   });
   bigPhotoCommentsWrapper.appendChild(commentFragment);
 }
 
-const commentStep = 5;
-
 function createSubarray() {
   const commentsArr = Array.from(bigPhotoCommentsWrapper.children);
 
-  if (bigPhotoCommentsWrapper.children.length <= commentStep) {
+  if (bigPhotoCommentsWrapper.children.length <= COMMENT_STEP) {
     for (let c = 0; c < commentsArr.length; c++) {
       commentsArr[c].classList.remove('hidden');
       loaderButton.classList.add('hidden');
     }
   }
 
-  for (let i = 0; i < Math.ceil(commentsArr.length / commentStep); i++) {
-    subArray[i] = commentsArr.slice((i * commentStep), (i * commentStep) + commentStep);
+  for (let i = 0; i < Math.ceil(commentsArr.length / COMMENT_STEP); i++) {
+    addArray[i] = commentsArr.slice((i * COMMENT_STEP), (i * COMMENT_STEP) + COMMENT_STEP);
   }
 
-  if (subArray.length === 0) {
+  if (addArray.length === 0) {
     loaderButton.classList.add('hidden');
   } else {
-    subArray[0].forEach((comment) => {
+    addArray[0].forEach((comment) => {
       comment.classList.remove('hidden');
     });
   }
@@ -107,19 +106,19 @@ function createSubarray() {
 const bigPhotoCommentsShown = document.querySelector('.social__comment-shown-count');
 
 function commentLoader() {
-  if (commentCount + 2 >= subArray.length) {
+  if (COMMENTS_COUNT + 2 >= addArray.length) {
     loaderButton.classList.add('hidden');
   }
 
-  commentCount += 1;
-  subArray[commentCount].forEach((comment) => {
+  COMMENTS_COUNT += 1;
+  addArray[COMMENTS_COUNT].forEach((comment) => {
     comment.classList.remove('hidden');
   });
 
   bigPhotoCommentsShown.textContent = bigPhotoCommentsWrapper.querySelectorAll('li:not(.hidden)').length;
 }
 
-function openPreview() {
+function OpenPreview() {
   const smallPhotos = document.querySelectorAll('.picture');
 
   smallPhotos.forEach((photos, i) => {
@@ -136,4 +135,4 @@ function openPreview() {
     });
   });
 }
-export {openPreview};
+export {OpenPreview};

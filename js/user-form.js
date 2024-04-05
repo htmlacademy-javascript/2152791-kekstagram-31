@@ -1,6 +1,4 @@
-//Удалить обработчикaaaaaaaa
-
-import { addSubmitListener, removeSubmitListener } from './validation.js';
+import { addSubmitListener, removeSubmitListener, pristine } from './validation.js';
 import { sliderContainer, targetImg, imgOriginalEffect } from './photo-effects.js';
 import { scaleValue } from './photo-scale.js';
 
@@ -17,8 +15,16 @@ function closeFormOutside(evt) {
   }
 }
 
-const escapeEventTogglerActive = new Event('escapeEventTogglerActive');
-const escapeEventTogglerDisable = new Event('escapeEventTogglerDisable');
+const escapeEventTogglerOpen = new Event('escapeEventTogglerOpen');
+const escapeEventTogglerClose = new Event('escapeEventTogglerClose');
+
+function escapeEventTogglerOpenCustom() {
+  return document.addEventListener('keydown', pressEscape);
+}
+
+function escapeEventTogglerCloseCustom() {
+  return document.removeEventListener('keydown', pressEscape);
+}
 
 function pressEscape(evt) {
   if (evt.key === 'Escape') {
@@ -31,21 +37,20 @@ function focusCheck(evt) {
   return evt.stopPropagation();
 }
 
-const preloadPhoto = document.getElementById('upload-file');
 const uploadPhoto = document.querySelector('.img-upload__photo');
-
-function loadUserPic() {
-  const preloadPhotoFile = preloadPhoto.files[0];
-
-  if (preloadPhotoFile) {
-    const preloadPhotoUrl = URL.createObjectURL(preloadPhotoFile);
-    uploadPhoto.src = preloadPhotoUrl;
-  }
-}
-
 const closeButton = document.querySelector('.img-upload__cancel');
 const commentInput = document.querySelector('.text__description');
 const hashtagInput = document.querySelector('.text__hashtags');
+
+function removeEvents() {
+  hashtagInput.removeEventListener('keydown', focusCheck);
+  commentInput.removeEventListener('keydown', focusCheck);
+  closeButton.removeEventListener('click', closeUserForm);
+  document.removeEventListener('click', closeFormOutside);
+  document.removeEventListener('keydown', pressEscape);
+  document.removeEventListener('escapeEventTogglerOpen', escapeEventTogglerOpenCustom);
+  document.removeEventListener('escapeEventTogglerClose', escapeEventTogglerCloseCustom);
+}
 
 function closeUserForm() {
   uploadInputOverlay.classList.add('hidden');
@@ -57,20 +62,21 @@ function closeUserForm() {
   scaleValue.value = '100%';
   targetImg.removeAttribute('style');
   sliderContainer.classList.add('hidden');
+  pristine.reset();
 
   removeSubmitListener();
 
-  hashtagInput.removeEventListener('keydown', focusCheck);
-  commentInput.removeEventListener('keydown', focusCheck);
-  closeButton.removeEventListener('click', closeUserForm);
-  document.removeEventListener('click', closeFormOutside);
-  document.removeEventListener('keydown', pressEscape);
-  document.removeEventListener('escapeEventTogglerActive', () => {
-    document.removeEventListener('keydown', pressEscape);
-  });
-  document.removeEventListener('escapeEventTogglerDisable', () => {
-    document.addEventListener('keydown', pressEscape);
-  });
+  removeEvents();
+}
+
+function addEvents() {
+  hashtagInput.addEventListener('keydown', focusCheck);
+  commentInput.addEventListener('keydown', focusCheck);
+  closeButton.addEventListener('click', closeUserForm);
+  document.addEventListener('click', closeFormOutside);
+  document.addEventListener('keydown', pressEscape);
+  document.addEventListener('escapeEventTogglerOpen', escapeEventTogglerOpenCustom);
+  document.addEventListener('escapeEventTogglerClose', escapeEventTogglerCloseCustom);
 }
 
 function openUserForm() {
@@ -78,20 +84,9 @@ function openUserForm() {
   pageBody.classList.add('modal-open');
   imgOriginalEffect.checked = true;
 
-  loadUserPic();
   addSubmitListener();
 
-  hashtagInput.addEventListener('keydown', focusCheck);
-  commentInput.addEventListener('keydown', focusCheck);
-  closeButton.addEventListener('click', closeUserForm);
-  document.addEventListener('click', closeFormOutside);
-  document.addEventListener('keydown', pressEscape);
-  document.addEventListener('escapeEventTogglerActive', () => {
-    document.removeEventListener('keydown', pressEscape);
-  });
-  document.addEventListener('escapeEventTogglerDisable', () => {
-    document.addEventListener('keydown', pressEscape);
-  });
+  addEvents();
 }
 
-export { uploadPhoto, closeUserForm, escapeEventTogglerActive, escapeEventTogglerDisable };
+export { uploadPhoto, closeUserForm, escapeEventTogglerOpen, escapeEventTogglerClose };
