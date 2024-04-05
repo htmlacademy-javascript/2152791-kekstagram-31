@@ -47,15 +47,7 @@ function RenderFilters(photoArray) {
     RenderPhoto(copyPhotoArray);
   }
 
-  const filtersWrapper = document.querySelector('.img-filters');
-
-  function filtersListener(evt) {
-    const target = evt.target;
-    const checkedButton = document.querySelector('.img-filters__button--active');
-
-    checkedButton.classList.remove('img-filters__button--active');
-    target.classList.add('img-filters__button--active');
-
+  function changeFilters(target) {
     switch (target) {
       case defaultButton:
         renderDefaultFilter();
@@ -71,7 +63,21 @@ function RenderFilters(photoArray) {
     }
   }
 
-  filtersWrapper.addEventListener('click', debounce(filtersListener));
+  const filtersWrapper = document.querySelector('.img-filters');
+
+  function filtersListener(evt) {
+    const target = evt.target;
+    const checkedButton = document.querySelector('.img-filters__button--active');
+
+    checkedButton.classList.remove('img-filters__button--active');
+    target.classList.add('img-filters__button--active');
+
+    const bindFilters = changeFilters.bind(null, target);
+
+    debounce(bindFilters)();
+  }
+
+  filtersWrapper.addEventListener('click', filtersListener);
 }
 
 export { RenderFilters, commentsArray };

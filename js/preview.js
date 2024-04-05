@@ -22,7 +22,9 @@ const bigPhotoCommentsCount = document.querySelector('.social__comment-total-cou
 const bigPhotoLikes = document.querySelector('.likes-count');
 
 function photoRendering(photos) {
-  bigPhoto.src = photos.querySelector('.picture__img').src;
+  const customSrc = photos.getAttribute('photo-src');
+
+  bigPhoto.src = customSrc;
   photoDescription.textContent = photos.querySelector('.picture__img').alt;
   bigPhotoLikes.textContent = photos.querySelector('.picture__likes').textContent;
   bigPhotoCommentsCount.textContent = photos.querySelector('.picture__comments').textContent;
@@ -135,4 +137,5 @@ function OpenPreview() {
     });
   });
 }
-export {OpenPreview};
+export { OpenPreview };
+
