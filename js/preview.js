@@ -22,9 +22,9 @@ const bigPhotoCommentsCount = document.querySelector('.social__comment-total-cou
 const bigPhotoLikes = document.querySelector('.likes-count');
 
 function photoRendering(photos) {
-  const customSrc = photos.getAttribute('photo-src');
+  const dataPhotoSrc = photos.getAttribute('data-photo-src');
 
-  bigPhoto.src = customSrc;
+  bigPhoto.src = dataPhotoSrc;
   photoDescription.textContent = photos.querySelector('.picture__img').alt;
   bigPhotoLikes.textContent = photos.querySelector('.picture__likes').textContent;
   bigPhotoCommentsCount.textContent = photos.querySelector('.picture__comments').textContent;
