@@ -7,9 +7,9 @@ const submitButton = document.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(userForm, {
   classTo: 'img-upload__field-wrapper',
-  errorClass: 'img-upload__field-wrapper--error',
+  errorTextClass: 'img-upload__field-wrapper--error',
   errorTextParent: 'img-upload__field-wrapper',
-  errorTextTag: 'p',
+  errorTextTag: 'div'
 });
 
 function spaceRemover(element) {
