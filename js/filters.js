@@ -5,8 +5,10 @@ const QUANTITY_PHOTOS = 10;
 let commentsArray = [];
 
 const photoWrapp = document.querySelector('.pictures');
+const filtersWrapper = document.querySelector('.img-filters');
+
 function renderCleaner() {
-  const allPictures = document.querySelectorAll('.picture');
+  const allPictures = photoWrapp.querySelectorAll('.picture');
 
   commentsArray = [];
 
@@ -63,11 +65,9 @@ function RenderFilters(photoArray) {
     }
   }
 
-  const filtersWrapper = document.querySelector('.img-filters');
-
   function filtersListener(evt) {
     const target = evt.target;
-    const checkedButton = document.querySelector('.img-filters__button--active');
+    const checkedButton = filtersWrapper.querySelector('.img-filters__button--active');
 
     checkedButton.classList.remove('img-filters__button--active');
     target.classList.add('img-filters__button--active');

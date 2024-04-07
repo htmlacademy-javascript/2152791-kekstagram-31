@@ -1,6 +1,7 @@
 import { addSubmitListener, removeSubmitListener, pristine } from './validation.js';
 import { sliderContainer, targetImg, imgOriginalEffect } from './photo-effects.js';
 import { scaleValue } from './photo-scale.js';
+import { checkEscape } from './utils.js';
 
 const uploadInput = document.querySelector('.img-upload__input');
 const pageBody = document.querySelector('body');
@@ -27,8 +28,7 @@ function escapeEventTogglerCloseCustom() {
 }
 
 function pressEscape(evt) {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
+  if (checkEscape(evt)) {
     closeUserForm();
   }
 }
