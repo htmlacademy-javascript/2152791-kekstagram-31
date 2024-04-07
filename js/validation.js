@@ -1,5 +1,6 @@
 import { closeUserForm } from './user-form.js';
 import { escapeEventTogglerOpen, escapeEventTogglerClose } from './user-form.js';
+import { checkEscape } from './utils.js';
 
 const HASHTAG_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const userForm = document.querySelector('.img-upload__form');
@@ -110,10 +111,8 @@ function eventClickOut(element, evt) {
 }
 
 function eventPressEscape(element, evt) {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
+  if (checkEscape(evt)) {
     pageBody.removeChild(element);
-
     document.dispatchEvent(escapeEventTogglerOpen);
   }
 

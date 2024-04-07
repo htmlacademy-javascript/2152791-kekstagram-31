@@ -2,6 +2,10 @@ function shuffleArray(array) {
   array.sort(() => Math.random() - 0.5);
 }
 
+function checkEscape(evt) {
+  return evt.key === 'Escape';
+}
+
 function debounce (callback, timeoutDelay = 500) {
   let timeoutId;
 
@@ -12,4 +16,4 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-export { shuffleArray, debounce };
+export { shuffleArray, debounce, checkEscape };

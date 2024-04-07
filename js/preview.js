@@ -1,4 +1,5 @@
 import { commentsArray } from './rendering.js';
+import { checkEscape } from './utils.js';
 
 const COMMENT_STEP = 5;
 let COMMENTS_COUNT = 0;
@@ -37,8 +38,7 @@ const loaderButton = document.querySelector('.social__comments-loader');
 const addArray = [];
 
 function pressEscape(evt) {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
+  if (checkEscape(evt)) {
     closePhoto();
   }
 }
